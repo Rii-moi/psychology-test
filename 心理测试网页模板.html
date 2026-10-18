@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html data-page-node-id="Rzp7UcRCBa3DCnRIZ7Bpz5" lang="zh-CN">
+<head data-page-node-id="HGmjS7dRbTwZ0QgZo8ASmg">
+<script data-page-node-id="1kbY2HNdav2EMK1ddMWgjA" src="/page/page_comm/inject.js"></script>
+    <meta data-page-node-id="gxgnfRyRjEfMN2SICzXSUX" charset="UTF-8">
+    <meta data-page-node-id="iLZM98cNPgfwPjzN14Dki2" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <title data-page-node-id="gg0HsPyZcNi9ivf55TDR1k" data-pnid-children="Xv5yN0iKi6r8SJhWRiS8tK">测测你的心理年龄</title>
+    <style data-page-node-id="hnrcOehlfN75Vsfy9JlSeJ" data-pnid-children="lBiSEX1ePVQrLFt0tvovAI">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* 封面页 */
+        .cover-emoji {
+            font-size: 64px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .cover-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .cover-desc {
+            font-size: 14px;
+            color: #888;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* 题目页 */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .question-num {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        .option {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #f8f8f8;
+            border: 2px solid transparent;
+            border-radius: 14px;
+            font-size: 15px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .option:hover {
+            background: #f0f0f0;
+        }
+        .option.selected {
+            border-color: #667eea;
+            background: #f0edff;
+        }
+
+        /* 计算中 */
+        .loading-emoji {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 16px;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .loading-text {
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* 结果页 */
+        .result-emoji {
+            font-size: 56px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .result-age {
+            font-size: 48px;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .result-label {
+            font-size: 16px;
+            color: #888;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .result-card {
+            background: #f8f8f8;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .result-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .result-card-text {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .share-btn {
+            width: 100%;
+            padding: 14px;
+            background: #07c160;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+        .restart-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* 底部引流 */
+        .footer {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        .footer-text {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        .footer-id {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body data-page-node-id="s2xERJjjVHT75ZLvU9SLwW">
+    <div data-page-node-id="RqSgLIuip5PM93sKnVogNE" class="container">
+        <!--pnid:0jgpqFBdsvZqWRwpjZ4gp7--><!-- 封面页 -->
+        <div data-page-node-id="5C8lQo0KD8VBBvsyDTl8Qg" class="page active" id="page-cover">
+            <div data-page-node-id="y9uKRs1GB5eGvftBZpab3p" class="cover-emoji"><!--pnid:I0Lz8vMm0fdoUC7SZuI4Ro-->🧠</div>
+            <div data-page-node-id="eM33ooFPBggQP0xCYrpRAx" class="cover-title"><!--pnid:nkrWuDrV8IcNq2IQt2t4En-->测测你的心理年龄</div>
+            <div data-page-node-id="aKzTWcORTsAF1M8IpsLcVG" class="cover-desc"><!--pnid:WXQ5tuNwhb2yyTAHYzaP81-->
+                你的身份证年龄只是数字<br data-page-node-id="5tiWqmy6xzN3v4K2wZFcdi"><!--pnid:b4rUkqMEcKE93hsMj5a1g0-->
+                真正决定你行为方式的<br data-page-node-id="H6wCRZlhHnDUMEG6U8t0eW"><!--pnid:xMWIA910SEORzJv8s6L3zP-->
+                是你的心理年龄<br data-page-node-id="62ZC2HajNlKEcKFaGHRmjO"><br data-page-node-id="xvIOEhzdocchnhI5e4OIbr"><!--pnid:Fb3kzw5euG5SJbiR099pu4-->
+                8道题目，1分钟测出<br data-page-node-id="sA6hSzcLjEvYlKzuRXXze5"><!--pnid:rnemN6BnwExopMaRLAjK0X-->
+                你的内心到底几岁
+            </div>
+            <button data-page-node-id="6cZNOwQ2IG32QeKPelS00A" class="btn-primary" onclick="startTest()"><!--pnid:XaJKoCUnXwSfuWpZttJAbS-->开始测试</button>
+        </div>
+
+        <!--pnid:xwQb4MOwFoRLUkZqNX9Nuo--><!-- 题目页 -->
+        <div data-page-node-id="cwcAPNiyKC5EHQCWJT0xtM" class="page" id="page-question">
+            <div data-page-node-id="MKE5CwrL3W8lqe2LUKoOCf" class="progress-bar">
+                <div data-page-node-id="jas5jh3h1fzGCEeerxMvo8" class="progress-fill" id="progress-fill" style="width:0%"></div>
+            </div>
+            <div data-page-node-id="YzRzVEL958vNCqZ1IACifH" class="question-num" id="question-num"><!--pnid:jCKDecv1TXEXUW4AsunI35-->第 1 / 8 题</div>
+            <div data-page-node-id="uCDEkrPehVtR25Obgr7FP8" class="question-text" id="question-text"><!--pnid:aaJT4DwRqg96BVmOvvh0Z0-->加载中...</div>
+            <div data-page-node-id="UiD7208wd3Z2N5v7JV7c3O" id="options-container"></div>
+        </div>
+
+        <!--pnid:R68t7KhpcdHz7dLsI1xwia--><!-- 计算中 -->
+        <div data-page-node-id="YNXXIDi1hiDcMujyc3dh95" class="page" id="page-loading">
+            <div data-page-node-id="AHpgI0F5Nye1QPnnBXKDr5" class="loading-emoji"><!--pnid:GLgmvX2m55ymvvZImaOMm4-->🤔</div>
+            <div data-page-node-id="ejiLwDiEmwEf12aP3xRdMn" class="loading-text"><!--pnid:C0KqlqzMAAi7wYyaLgQNj8-->正在分析你的心理特征...</div>
+        </div>
+
+        <!--pnid:diJLo6HcJMTCqzzVCBTsbD--><!-- 结果页 -->
+        <div data-page-node-id="ioR0v0iWzrvtdnayBid0ug" class="page" id="page-result">
+            <div data-page-node-id="eVySjss2GrvOAF7cuzw97U" class="result-emoji" id="result-emoji"><!--pnid:DRy9IdGLe3Z8n6XWIPTmNn-->🎉</div>
+            <div data-page-node-id="R3yt1acvLo0CgjDq15rI7a" class="result-age" id="result-age"><!--pnid:X65WVcSKfG3V0CLU7LhRlR-->25岁</div>
+            <div data-page-node-id="lFfntrZ98rBpwQOyHLJ5nN" class="result-label" id="result-label"><!--pnid:hXt6qIx3TLWfskfu7ssJqx-->你的心理年龄</div>
+            <div data-page-node-id="mJvchfJ1NQT4MQ5DtyXyeH" class="result-card">
+                <div data-page-node-id="6EVfrxqFXYtZjb4IQT1NkC" class="result-card-title"><!--pnid:wmUXjoXExn7PP8EH4isE1z-->💡 性格画像</div>
+                <div data-page-node-id="HoNCDp0zb5MOIAY3AgEdS7" class="result-card-text" id="result-desc"><!--pnid:dfEfXiq6yTAcGRKl3XLy0R-->分析中...</div>
+            </div>
+            <div data-page-node-id="PMlI3i0chMKWlr9pqxU5ke" class="result-card">
+                <div data-page-node-id="68e46Evy0hOFNAYCW3wUkA" class="result-card-title"><!--pnid:6Ry8lbYs9vP3zRChoRGmfo-->🎯 给你的建议</div>
+                <div data-page-node-id="ZH1ikWdfGzhooDNMoouHzJ" class="result-card-text" id="result-advice"><!--pnid:eNqs24OQYA74XDpomen8tZ-->建议中...</div>
+            </div>
+            <button data-page-node-id="VaYYPYbDrJPwewXm2e9wfx" class="share-btn" onclick="shareResult()"><!--pnid:cgcxFs3GqFLhWfKURdkxzo-->📤 分享测试结果</button>
+            <button data-page-node-id="oZ6SsxI9s7hsQnQfA7IJ9O" class="restart-btn" onclick="restartTest()"><!--pnid:A3xOh0P9xzXnuvE30ZZhSr-->再测一次</button>
+            <div data-page-node-id="PzTR9ujQUYN6lT0rjqXfXa" class="footer">
+                <div data-page-node-id="HeLVmjGpNT9qld29Ai0tc8" class="footer-text"><!--pnid:bhzPLxAkLsQVNs7LwD8tZ6-->更多趣味测试关注</div>
+                <div data-page-node-id="sG4woBZq29oGHPR4iJ4vUx" class="footer-id"><!--pnid:4tCWRnJjMnoCq3HJFJF8np-->小红书 @小樱测评馆</div>
+            </div>
+        </div>
+    </div>
+
+    <script data-page-node-id="lSIjh5IXbBHynUn4ANajAn" data-pnid-children="hcz47ENPFI1w8meNHvFNqR">
+        // ==================== 配置区：修改这里的内容即可 ====================
+        const questions = [
+            {
+                text: "朋友突然取消约会，你的第一反应是？",
+                options: [
+                    { text: "太好了，正好可以在家休息", score: 3 },
+                    { text: "有点失落，但很快找别的事做", score: 2 },
+                    { text: "很生气，觉得不被重视", score: 1 },
+                    { text: "无所谓，本来也没多想去", score: 4 }
+                ]
+            },
+            {
+                text: "周末你更倾向于怎么度过？",
+                options: [
+                    { text: "宅家追剧打游戏", score: 2 },
+                    { text: "约朋友出去逛街探店", score: 1 },
+                    { text: "一个人去图书馆/咖啡馆", score: 3 },
+                    { text: "在家整理房间、做计划", score: 4 }
+                ]
+            },
+            {
+                text: "遇到挫折时，你通常会？",
+                options: [
+                    { text: "大哭一场发泄情绪", score: 1 },
+                    { text: "找朋友倾诉", score: 2 },
+                    { text: "自己消化，不想麻烦别人", score: 3 },
+                    { text: "冷静分析原因，制定解决方案", score: 4 }
+                ]
+            },
+            {
+                text: "对于未来，你的态度是？",
+                options: [
+                    { text: "充满期待，觉得一切皆有可能", score: 1 },
+                    { text: "有点焦虑，但还是会努力", score: 2 },
+                    { text: "顺其自然，走一步看一步", score: 3 },
+                    { text: "有清晰规划，按部就班执行", score: 4 }
+                ]
+            },
+            {
+                text: "和朋友聊天时，你更多扮演什么角色？",
+                options: [
+                    { text: "吐槽担当，一起抱怨生活", score: 2 },
+                    { text: "倾听者，听别人说完", score: 3 },
+                    { text: "开心果，负责活跃气氛", score: 1 },
+                    { text: "理性分析，给出建议", score: 4 }
+                ]
+            },
+            {
+                text: "看到感人的电影情节，你会？",
+                options: [
+                    { text: "当场落泪，情绪完全代入", score: 1 },
+                    { text: "眼眶微湿，但不会哭出来", score: 2 },
+                    { text: "内心触动，但表面平静", score: 3 },
+                    { text: "理性分析导演的拍摄手法", score: 4 }
+                ]
+            },
+            {
+                text: "购物时你更看重？",
+                options: [
+                    { text: "颜值和潮流", score: 1 },
+                    { text: "品牌和质量", score: 2 },
+                    { text: "性价比和实用性", score: 3 },
+                    { text: "长期价值和耐用度", score: 4 }
+                ]
+            },
+            {
+                text: "面对一个新挑战，你的第一反应？",
+                options: [
+                    { text: "兴奋！想立刻尝试", score: 1 },
+                    { text: "有点紧张，但愿意试试", score: 2 },
+                    { text: "先查资料做准备", score: 3 },
+                    { text: "评估风险和投入产出比", score: 4 }
+                ]
+            }
+        ];
+
+        const results = [
+            {
+                min: 8, max: 14,
+                age: "15-20岁",
+                emoji: "🌱",
+                desc: "你的心理年龄非常年轻！你保持着对世界的好奇和热情，像一棵正在茁壮成长的幼苗。你敢于表达情绪，不掩饰自己的喜怒哀乐，这种真实非常珍贵。",
+                advice: "保持这份纯真，但也试着在重要决定前多思考一下。成长不是坏事，你可以慢慢学会在热情和理性之间找到平衡。"
+            },
+            {
+                min: 15, max: 20,
+                age: "21-28岁",
+                emoji: "🌸",
+                desc: "你的心理年龄正处于最美好的年华。你有年轻人的活力，也开始懂得责任和规划。你能在感性和理性之间切换，这是很多人羡慕的能力。",
+                advice: "你已经在正确的路上了。继续探索世界，但也别忘了偶尔停下来问问自己：这真的是你想要的吗？"
+            },
+            {
+                min: 21, max: 26,
+                age: "29-38岁",
+                emoji: "🍂",
+                desc: "你的心理年龄比实际年龄更成熟。你可能经历过一些事，让你学会了内敛和思考。你习惯把情绪藏起来，遇事先考虑后果，这种沉稳是你的保护伞。",
+                advice: "成熟是好事，但别忘了你心里还住着一个孩子。偶尔允许自己任性一下、哭一场、或者什么都不做，这不是软弱，是对自己的温柔。"
+            },
+            {
+                min: 27, max: 32,
+                age: "39-50岁",
+                emoji: "🌳",
+                desc: "你的心理年龄相当成熟，像一棵经历风雨的大树。你看问题很透彻，情绪稳定，是朋友圈里的"定海神针"。但这种成熟背后，可能藏着过早背负的压力。",
+                advice: "你已经很强大了，但强大不等于要扛下所有。学会向信任的人示弱，不是丢脸，而是让自己有喘息的空间。"
+            },
+            {
+                min: 33, max: 40,
+                age: "50岁+",
+                emoji: "🦉",
+                desc: "你的心理年龄非常资深，拥有超越年龄的智慧。你见多识广，处事不惊，是很多人心中的"人生导师"。但这可能也意味着，你比同龄人更早失去了某些天真。",
+                advice: "智慧是你的财富，但不要因为看得太透而放弃了体验的乐趣。有时候，"糊涂"一点，反而能收获更多快乐。"
+            }
+        ];
+
+        const footerID = "小红书 @你的账号名"; // ← 改成你的小红书ID
+        // ==================== 配置区结束 ====================
+
+        let currentQuestion = 0;
+        let totalScore = 0;
+
+        function startTest() {
+            currentQuestion = 0;
+            totalScore = 0;
+            showPage('page-question');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-num').textContent = `第 ${currentQuestion + 1} / ${questions.length} 题`;
+            document.getElementById('question-text').textContent = q.text;
+
+            const progress = ((currentQuestion) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.textContent = opt.text;
+                btn.onclick = () => selectOption(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectOption(idx) {
+            const q = questions[currentQuestion];
+            totalScore += q.options[idx].score;
+
+            const opts = document.querySelectorAll('.option');
+            opts[idx].classList.add('selected');
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    renderQuestion();
+                } else {
+                    showLoading();
+                }
+            }, 300);
+        }
+
+        function showLoading() {
+            showPage('page-loading');
+            setTimeout(() => {
+                showResult();
+            }, 2000);
+        }
+
+        function showResult() {
+            const result = results.find(r => totalScore >= r.min && totalScore <= r.max);
+            if (!result) {
+                const last = results[results.length - 1];
+                showResultPage(last);
+            } else {
+                showResultPage(result);
+            }
+        }
+
+        function showResultPage(result) {
+            document.getElementById('result-emoji').textContent = result.emoji;
+            document.getElementById('result-age').textContent = result.age;
+            document.getElementById('result-desc').textContent = result.desc;
+            document.getElementById('result-advice').textContent = result.advice;
+            document.querySelector('.footer-id').textContent = footerID;
+            showPage('page-result');
+        }
+
+        function shareResult() {
+            const age = document.getElementById('result-age').textContent;
+            const text = `我测出来心理年龄是${age}！快来测测你的👉`;
+            if (navigator.share) {
+                navigator.share({
+                    title: '测测你的心理年龄',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                // 复制到剪贴板
+                const input = document.createElement('input');
+                input.value = text + ' ' + window.location.href;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                alert('已复制分享文案，去小红书粘贴吧！');
+            }
+        }
+
+        function restartTest() {
+            startTest();
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
